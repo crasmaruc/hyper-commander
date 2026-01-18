@@ -20,7 +20,13 @@ while true; do
       echo "Farewell!"
       break
       ;;
-    1|2|3|4)
+    1)
+      echo "OS: $(uname -s)"
+      ;;
+    2)
+      echo "User: $(whoami)"
+      ;;
+    3|4)
       echo "Not implemented!"
       ;;
     *)
