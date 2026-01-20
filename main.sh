@@ -17,8 +17,14 @@ file_dir_operations() {
     echo "| 0 Main menu | 'up' To parent | 'name' To select |"
     echo "---------------------------------------------------"
     read -r option
-    if [[ -e "$option" || "$option" == "up" ]]; then
-      echo "Not implemented!"
+    if [[ -e "$option" ]]; then
+      if [[ -d "$option" ]]; then
+        cd "$option"
+      else
+        echo "Not implemented!"
+      fi
+    elif [[ "$option" == "up" ]]; then
+      cd ../
     elif [[ "$option" == "0" ]]; then
       return 0
     else
