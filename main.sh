@@ -1,5 +1,34 @@
 #!/usr/bin/env bash
 
+file_dir_operations() {
+  while true; do
+    arr=(*)
+    echo "The list of files and directories:"
+    for item in "${arr[@]}"; do
+      if [[ -f "$item" ]]; then
+        echo "F $item"
+      elif [[ -d "$item" ]]; then
+        echo "D $item"
+      fi
+    done
+
+    echo
+    echo "---------------------------------------------------"
+    echo "| 0 Main menu | 'up' To parent | 'name' To select |"
+    echo "---------------------------------------------------"
+    read -r option
+    if [[ -e "$option" || "$option" == "up" ]]; then
+      echo "Not implemented!"
+    elif [[ "$option" == "0" ]]; then
+      return 0
+    else
+     echo "Invalid input!"
+    fi
+    echo
+
+  done
+}
+
 echo "Hello $USER!"
 
 while true; do
@@ -26,7 +55,10 @@ while true; do
     2)
       echo "User: $(whoami)"
       ;;
-    3|4)
+    3)
+      file_dir_operations
+      ;;
+    4)
       echo "Not implemented!"
       ;;
     *)
