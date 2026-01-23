@@ -1,5 +1,47 @@
 #!/usr/bin/env bash
 
+file_operations() {
+  local file=$1
+
+  while true; do
+    echo "---------------------------------------------------------------------"
+    echo "| 0 Back | 1 Delete | 2 Rename | 3 Make writable | 4 Make read-only |"
+    echo "---------------------------------------------------------------------"
+    read -r option
+    case "$option" in
+      0)
+        break
+        ;;
+      1)
+        rm -f "$file"
+        echo "$file has been deleted."
+        break
+        ;;
+      2)
+        echo "Enter the new file name:"
+        read -r name
+        mv "$file" "$name"
+        echo "$file has been renamed as $name"
+        break
+        ;;
+      3)
+        chmod 666 "$file"
+        echo "Permissions have been updated."
+        ls -l "$file"
+        break
+        ;;
+      4)
+        chmod 664 "$file"
+        echo "Permissions have been updated."
+        ls -l "$file"
+        break
+        ;;
+      *)
+        ;;
+    esac
+  done
+}
+
 file_dir_operations() {
   while true; do
     arr=(*)
@@ -19,9 +61,9 @@ file_dir_operations() {
     read -r option
     if [[ -e "$option" ]]; then
       if [[ -d "$option" ]]; then
-        cd "$option"
+        cd "$option" || return
       else
-        echo "Not implemented!"
+        file_operations "$option"
       fi
     elif [[ "$option" == "up" ]]; then
       cd ../
