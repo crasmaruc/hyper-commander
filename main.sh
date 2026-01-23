@@ -7,6 +7,7 @@ file_operations() {
     echo "---------------------------------------------------------------------"
     echo "| 0 Back | 1 Delete | 2 Rename | 3 Make writable | 4 Make read-only |"
     echo "---------------------------------------------------------------------"
+
     read -r option
     case "$option" in
       0)
@@ -24,14 +25,12 @@ file_operations() {
         echo "$file has been renamed as $name"
         break
         ;;
-      3)
-        chmod 666 "$file"
-        echo "Permissions have been updated."
-        ls -l "$file"
-        break
-        ;;
-      4)
-        chmod 664 "$file"
+      3|4)
+        if [[ "$option" -eq 3 ]]; then
+          chmod 666 "$file"
+        else
+          chmod 664 "$file"
+        fi
         echo "Permissions have been updated."
         ls -l "$file"
         break
@@ -58,6 +57,7 @@ file_dir_operations() {
     echo "---------------------------------------------------"
     echo "| 0 Main menu | 'up' To parent | 'name' To select |"
     echo "---------------------------------------------------"
+
     read -r option
     if [[ -e "$option" ]]; then
       if [[ -d "$option" ]]; then
@@ -107,7 +107,22 @@ while true; do
       file_dir_operations
       ;;
     4)
-      echo "Not implemented!"
+      echo
+      echo "Enter an executable name:"
+      read -r exec_name
+      path=$(which "$exec_name")
+      echo
+
+      if [[ -n "$path" ]]; then
+        echo "Located in: $path"
+        echo
+        echo "Enter arguments:"
+        read -r args
+        echo
+        $path "$args"
+      else
+        echo "The executable with that name does not exist!"
+      fi
       ;;
     *)
       echo "Invalid option!"
